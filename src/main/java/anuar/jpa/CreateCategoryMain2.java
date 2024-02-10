@@ -14,23 +14,13 @@ public class CreateCategoryMain2 {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
         EntityManager manager = factory.createEntityManager();
 
+        Category category = new Category();
+
         Scanner scan = new Scanner(System.in);
-
-        /*
-        TypedQuery<Category> categoriesQuery = manager.createQuery(
-                "select c from Category c", Category.class
-        );
-        List<Category> categories = categoriesQuery.getResultList();
-
-        List<String> categoriesName = new ArrayList<>();
-        for (Category c : categories) {
-            categoriesName.add(c.getName());
-        }
-        */
+        System.out.print("Введите название категории: ");
+        String categoryName = scan.nextLine();
 
         while (true) {
-            System.out.print("Введите название категории: ");
-            String categoryName = scan.nextLine();
             TypedQuery<Long> categoriesQuery = manager.createQuery(
                     "select count(c.id) from Category c where c.name = ?1", Long.class
             );
@@ -39,25 +29,13 @@ public class CreateCategoryMain2 {
 
             if (nameCount > 0) {
                 System.out.println("Такая категория уже существует, введите новую категорию: ");
-            } else {
-                break;
-            }
-        }
-
-        Category category = new Category();
-        /*
-        while (true) {
-            if (categoriesName.contains(categoryName)) {
-                System.out.print("Такая категория уже существует, введите название категории: ");
                 categoryName = scan.nextLine();
             } else {
                 category.setName(categoryName);
                 break;
             }
         }
-        */
 
-        /*
         try {
             manager.getTransaction().begin();
             manager.persist(category);
@@ -68,7 +46,5 @@ public class CreateCategoryMain2 {
         }
         manager.close();
         factory.close();
-
-         */
     }
 }
