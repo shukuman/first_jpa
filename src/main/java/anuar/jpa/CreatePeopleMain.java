@@ -2,19 +2,29 @@ package anuar.jpa;
 
 import anuar.jpa.entity.City;
 import anuar.jpa.entity.People;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class CreatePeopleMain {
     public static void main(String[] args) {
 
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
+        EntityManager manager = factory.createEntityManager();
+
+        TypedQuery<String> cityTypedQuery = manager.createQuery(
+                "select c.name from City c", String.class
+        );
+        List<String> cityList = cityTypedQuery.getResultList();
+
         Scanner scan = new Scanner(System.in);
 
-        System.out.print("Select city of residence (enter a number):\n1. Astana\n2. Almaty\n3. London\n");
+        System.out.println("Select city of residence from this list (enter a number):");
+        int i = 1;
+        for (String name : cityList) {
+            System.out.printf("%d. %s\n", i, name);
+            i++;
+        }
         int cityId = scan.nextInt();
         scan.nextLine();
 
@@ -22,9 +32,6 @@ public class CreatePeopleMain {
         String personName = scan.nextLine();
 
         scan.close();
-
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
-        EntityManager manager = factory.createEntityManager();
 
         City city = manager.find(City.class, cityId);
 

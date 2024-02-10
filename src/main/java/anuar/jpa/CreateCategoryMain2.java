@@ -11,13 +11,12 @@ import java.util.Scanner;
 public class CreateCategoryMain2 {
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Введите название категории: ");
-        String categoryName = scan.nextLine();
-
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
         EntityManager manager = factory.createEntityManager();
 
+        Scanner scan = new Scanner(System.in);
+
+        /*
         TypedQuery<Category> categoriesQuery = manager.createQuery(
                 "select c from Category c", Category.class
         );
@@ -27,9 +26,26 @@ public class CreateCategoryMain2 {
         for (Category c : categories) {
             categoriesName.add(c.getName());
         }
+        */
+
+        while (true) {
+            System.out.print("Введите название категории: ");
+            String categoryName = scan.nextLine();
+            TypedQuery<Long> categoriesQuery = manager.createQuery(
+                    "select count(c.id) from Category c where c.name = ?1", Long.class
+            );
+            categoriesQuery.setParameter(1, categoryName);
+            long nameCount = categoriesQuery.getSingleResult();
+
+            if (nameCount > 0) {
+                System.out.println("Такая категория уже существует, введите новую категорию: ");
+            } else {
+                break;
+            }
+        }
 
         Category category = new Category();
-
+        /*
         while (true) {
             if (categoriesName.contains(categoryName)) {
                 System.out.print("Такая категория уже существует, введите название категории: ");
@@ -39,7 +55,9 @@ public class CreateCategoryMain2 {
                 break;
             }
         }
+        */
 
+        /*
         try {
             manager.getTransaction().begin();
             manager.persist(category);
@@ -50,5 +68,7 @@ public class CreateCategoryMain2 {
         }
         manager.close();
         factory.close();
+
+         */
     }
 }
