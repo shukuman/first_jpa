@@ -1,5 +1,7 @@
-package anuar.jpa.entity;
+package anuar.jpa;
 
+import anuar.jpa.entity.Product;
+import anuar.jpa.entity.Value;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
